@@ -1,4 +1,10 @@
-const books = [
+const uid = () => {
+  return Math.floor((1 + Math.random()) * 0x10000)
+    .toString(16)
+    .substring(1);
+};
+
+let books = [
   {
     id: "9a5s2f187ed2f",
     title: "Justice League of America",
@@ -13,8 +19,24 @@ const books = [
   },
 ];
 
+interface argsInterface {
+  title: string;
+}
+
 export const resolvers = {
   Query: {
     books: () => books,
+  },
+
+  Mutation: {
+    addBook(_: undefined, args: argsInterface) {
+      const newBook = {
+        id: uid() + uid(),
+        title: args.title,
+      };
+      books.push({ id: newBook.id, title: newBook.title });
+
+      return newBook;
+    },
   },
 };
